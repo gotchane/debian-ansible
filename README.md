@@ -1,6 +1,6 @@
-# mac-ansible
+# debian-ansible
 
-Personal macosx configulation management with Ansible
+Personal debian configulation management with Ansible
 
 This repository is inspired by https://github.com/mtchavez/mac-ansible
 
