@@ -1,0 +1,9 @@
+---
+
+base_apt_packages:
+  - name: neovim
+  - name: peco
+  - name: ripgrep
+  - name: tmux
+  - name: zsh
+base_default_shell: /usr/local/bin/zsh

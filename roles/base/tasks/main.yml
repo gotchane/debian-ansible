@@ -1,0 +1,58 @@
+---
+- name: Enable to execute sudo without password
+  become: True
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%sudo\s'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  tags:
+    - base
+    - sudo
+
+# - name: update apt
+#   become: True
+#   apt:
+#     update_cache: yes
+#   tags:
+#     - base
+#     - apt
+#
+# - name: Upgrade all packages to the latest version
+#   become: True
+#   apt:
+#     name: "*"
+#     force_apt_get: True
+#     state: latest      
+#   tags:
+#     - base
+#     - apt
+
+- name: Install base apt packages
+  become: True
+  apt:
+    name: "{{ item.name }}"
+    force_apt_get: True
+    state: "{{ item.state | default('latest') }}"
+  with_items: "{{ base_apt_packages }}"
+  tags:
+    - base
+    - apt
+
+- name: Change shell config
+  become: yes
+  lineinfile:
+    path: /etc/shells
+    state: present
+    line: "{{ base_default_shell }}"
+  tags:
+    - base
+    - shell
+
+- name: Change default shell
+  become: yes
+  command: "chsh -s {{ base_default_shell }} {{ ansible_user }}"
+  tags:
+    - base
+    - shell
